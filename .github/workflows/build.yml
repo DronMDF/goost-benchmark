@@ -11,7 +11,6 @@ jobs:
         sudo pip3 install cpplint conan
         conan remote add mdf https://api.bintray.com/conan/mdf/pureoop
         conan install . -s compiler.libcxx='libstdc++11' --build goost --build 2out
-        cmake -DCMAKE_CXX_FLAGS="--coverage" .
+        cmake .
         make style
         make VERBOSE=1
-        make test
