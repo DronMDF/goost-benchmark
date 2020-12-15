@@ -1,0 +1,6 @@
+[requires]
+2out/0.10@dronmdf/testing
+goost/0.4@dronmdf/testing
+
+[generators]
+cmake
