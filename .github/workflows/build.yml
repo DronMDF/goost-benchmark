@@ -9,7 +9,6 @@ jobs:
     - run: |
         sudo apt-get install cmake cppcheck doxygen python3-pip python3-setuptools
         sudo pip3 install cpplint conan
-        gem install
         conan remote add mdf https://api.bintray.com/conan/mdf/pureoop
         conan install . -s compiler.libcxx='libstdc++11' --build goost
         cmake -DCMAKE_CXX_FLAGS="--coverage" .
