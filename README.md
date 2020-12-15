@@ -1,6 +1,6 @@
 # goost-benchmark
 
-(goost)[https://github.com/DronMDF/goost] library comparsion benchmark.
+[goost](https://github.com/DronMDF/goost) library comparsion benchmark.
 
 # Principles of the project
 
