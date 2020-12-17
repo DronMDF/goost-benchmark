@@ -2,6 +2,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.13)
 
 PROJECT(goost-benchmark)
 
+FIND_PACKAGE(OpenSSL REQUIRED)
+
 INCLUDE(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
@@ -16,6 +18,7 @@ TARGET_LINK_LIBRARIES(
 	goost-benchmark
 	goost
 	${CMAKE_THREAD_LIBS_INIT}
+	${OPENSSL_LIBRARIES}
 )
 
 ADD_CUSTOM_TARGET(
