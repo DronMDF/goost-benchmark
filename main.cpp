@@ -4,6 +4,7 @@
 #include <chrono>
 #include <openssl/evp.h>
 #include <openssl/rand.h>
+#include <openssl/engine.h>
 
 using namespace std;
 
@@ -25,10 +26,15 @@ void gen_params(uint8_t key[KEY_SIZE], uint8_t iv[BLOCK_SIZE])
 	}
 }
 
-void aes_encrypt(const uint8_t key[KEY_SIZE], const uint8_t iv[BLOCK_SIZE], const vector<uint8_t> &ptext, vector<uint8_t> &ctext)
+void encrypt(const uint8_t key[KEY_SIZE], const uint8_t iv[BLOCK_SIZE], const vector<uint8_t> &ptext, vector<uint8_t> &ctext)
 {
+        const EVP_CIPHER *type = EVP_get_cipherbynid(NID_gost89_cbc);
+        if (type == nullptr) {
+        	throw runtime_error("No encrypt ciphers");
+	}
+
 	EVP_CIPHER_CTX_ptr ctx(EVP_CIPHER_CTX_new(), ::EVP_CIPHER_CTX_free);
-	int rc = EVP_EncryptInit_ex(ctx.get(), EVP_aes_256_cbc(), NULL, key, iv);
+	int rc = EVP_EncryptInit_ex(ctx.get(), type, NULL, key, iv);
 	if (rc != 1) {
 		throw runtime_error("EVP_EncryptInit_ex failed");
 	}
@@ -51,10 +57,15 @@ void aes_encrypt(const uint8_t key[KEY_SIZE], const uint8_t iv[BLOCK_SIZE], cons
 	ctext.resize(out_len1 + out_len2);
 }
 
-void aes_decrypt(const uint8_t key[KEY_SIZE], const uint8_t iv[BLOCK_SIZE], const vector<uint8_t> &ctext, vector<uint8_t> &rtext)
+void decrypt(const uint8_t key[KEY_SIZE], const uint8_t iv[BLOCK_SIZE], const vector<uint8_t> &ctext, vector<uint8_t> &rtext)
 {
+        const EVP_CIPHER *type = EVP_get_cipherbynid(NID_gost89_cbc);
+        if (type == nullptr) {
+        	throw runtime_error("No decrypt ciphers");
+	}
+
 	EVP_CIPHER_CTX_ptr ctx(EVP_CIPHER_CTX_new(), ::EVP_CIPHER_CTX_free);
-	int rc = EVP_DecryptInit_ex(ctx.get(), EVP_aes_256_cbc(), NULL, key, iv);
+	int rc = EVP_DecryptInit_ex(ctx.get(), type, NULL, key, iv);
 	if (rc != 1) {
 		throw runtime_error("EVP_DecryptInit_ex failed");
 	}
@@ -80,8 +91,27 @@ void aes_decrypt(const uint8_t key[KEY_SIZE], const uint8_t iv[BLOCK_SIZE], cons
 
 int main(int, char **)
 {
-	// Load the necessary cipher
-	EVP_add_cipher(EVP_aes_256_cbc());
+	OPENSSL_add_all_algorithms_conf();
+	ERR_load_crypto_strings();
+
+	ENGINE *eng = ENGINE_by_id("gost");
+	if (eng == nullptr) {
+		throw runtime_error("No engine");
+	}
+	ENGINE_init(eng);
+	ENGINE_set_default(eng, ENGINE_METHOD_ALL);
+
+	auto fn_c = ENGINE_get_ciphers(eng);
+	if (fn_c == nullptr) {
+		throw runtime_error("No ciphers");
+	}
+	const int *nids;
+	const auto n = fn_c(eng, NULL, &nids, 0);
+	for (int k = 0; k < n; ++k) {
+		const EVP_CIPHER *type = EVP_get_cipherbynid(nids[k]);
+		const char *name = EVP_CIPHER_name(type);
+		cout << "Cipher: " << name << endl;
+	}
 
 	// plaintext, ciphertext, recovered text
 	constexpr size_t datasize = 1024 * 1024 * 1024;
@@ -95,11 +125,11 @@ int main(int, char **)
 
 	const auto start_time = chrono::high_resolution_clock::now();
 
-	aes_encrypt(key, iv, ptext, ctext);
+	encrypt(key, iv, ptext, ctext);
 
 	const auto middle_time = chrono::high_resolution_clock::now();
 
-	aes_decrypt(key, iv, ctext, rtext);
+	decrypt(key, iv, ctext, rtext);
 
 	const auto end_time = chrono::high_resolution_clock::now();
 	const chrono::duration<double> encryption_time = middle_time - start_time;
