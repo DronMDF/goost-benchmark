@@ -18,7 +18,7 @@ string SinkImpl::name() const
 chrono::duration<double> SinkImpl::run(const size_t data_size, const size_t block_size) const
 {
 	size_t size = 0;
-	vector<byte> block(block_size, byte());
+	vector<byte> block(min(block_size, data_size), byte());
 	auto sink = factory->sink(make_shared<MemorySink>());
 	const auto start_time = chrono::high_resolution_clock::now();
 	while (size < data_size) {

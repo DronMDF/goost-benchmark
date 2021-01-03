@@ -3,20 +3,20 @@
 using namespace std;
 using namespace goost;
 
-MemorySink::MemorySink(const vector<byte> &data)
+MemorySink::MemorySink(const list<vector<byte>> &data)
 	: data(data)
 {
 }
 
 MemorySink::MemorySink()
-	: MemorySink(vector<byte>{})
+	: MemorySink(list<vector<byte>>{})
 {
 }
 
 shared_ptr<const Sink> MemorySink::write(const vector<byte> &d) const
 {
 	auto dd = data;
-	dd.insert(dd.end(), d.begin(), d.end());
+	dd.push_back(d);
 	return make_shared<MemorySink>(dd);
 }
 
@@ -27,5 +27,9 @@ shared_ptr<const Sink> MemorySink::finalize() const
 
 vector<byte> MemorySink::raw() const
 {
-	return data;
+	vector<byte> rv;
+	for (const auto &d : data) {
+		rv.insert(rv.end(), d.begin(), d.end());
+	}
+	return rv;
 }

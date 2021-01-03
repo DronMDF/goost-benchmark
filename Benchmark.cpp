@@ -11,7 +11,7 @@ Benchmark::Benchmark(const std::shared_ptr<const Impl> &impl)
 
 void Benchmark::run() const
 {
- 	for (int bs = 20; bs < 28; bs++) {
+ 	for (int bs = 18; bs < 27; bs++) {
 		for (const auto &i : impls) {
 			const size_t datasize = 1024 * 1024 * 64;
 			const auto time = i->run(datasize, 1 << bs);

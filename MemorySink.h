@@ -1,9 +1,10 @@
 #pragma once
+#include <list>
 #include <goost/Sink.h>
 
 class MemorySink final : public goost::Sink {
 public:
-	explicit MemorySink(const std::vector<std::byte> &data);
+	explicit MemorySink(const std::list<std::vector<std::byte>> &data);
 	MemorySink();
 
 	std::shared_ptr<const goost::Sink> write(const std::vector<std::byte> &data) const override;
@@ -11,5 +12,5 @@ public:
 
 	std::vector<std::byte> raw() const;
 private:
-	const std::vector<std::byte> data;
+	const std::list<std::vector<std::byte>> data;
 };
