@@ -12,11 +12,26 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Wextra -pedantic -Werr
 ADD_EXECUTABLE(
 	goost-benchmark
 	main.cpp
+	Benchmark.cpp
+	MemorySink.cpp
+	SinkImpl.cpp
+	TransparentSinkFactory.cpp
 )
 
 TARGET_LINK_LIBRARIES(
 	goost-benchmark
 	goost
+	${CMAKE_THREAD_LIBS_INIT}
+	${OPENSSL_LIBRARIES}
+)
+
+ADD_EXECUTABLE(
+	reference
+	reference.cpp
+)
+
+TARGET_LINK_LIBRARIES(
+	reference
 	${CMAKE_THREAD_LIBS_INIT}
 	${OPENSSL_LIBRARIES}
 )
