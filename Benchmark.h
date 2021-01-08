@@ -9,7 +9,12 @@ class Impl;
 // for check cache affinity
 class Benchmark final {
 public:
-	explicit Benchmark(const std::shared_ptr<const Impl> &impl);
+	template<typename... T>
+	explicit Benchmark(const T & ... is)
+		: impls({is...})
+	{
+	}
+
 	void run() const;
 private:
 	const std::vector<std::shared_ptr<const Impl>> impls;
