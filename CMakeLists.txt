@@ -14,6 +14,7 @@ ADD_EXECUTABLE(
 	main.cpp
 	Benchmark.cpp
 	MemorySink.cpp
+	OpensslSinkFactory.cpp
 	SinkImpl.cpp
 	TransparentSinkFactory.cpp
 )

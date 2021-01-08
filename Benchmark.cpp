@@ -4,11 +4,6 @@
 
 using namespace std;
 
-Benchmark::Benchmark(const std::shared_ptr<const Impl> &impl)
-	: impls(1, impl)
-{
-}
-
 void Benchmark::run() const
 {
  	for (int bs = 18; bs < 27; bs++) {
