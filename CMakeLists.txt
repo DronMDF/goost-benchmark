@@ -13,6 +13,7 @@ ADD_EXECUTABLE(
 	goost-benchmark
 	main.cpp
 	Benchmark.cpp
+	MagmaCfbSinkFactory.cpp
 	MemorySink.cpp
 	OpensslSink.cpp
 	OpensslSinkFactory.cpp
