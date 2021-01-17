@@ -1,6 +1,6 @@
 #include "MagmaCfbSinkFactory.h"
 #include <goost/magma/CFBSink.h>
-#include <goost/magma/Key.h>
+#include <goost/magma/LazyKey.h>
 
 using namespace std;
 using namespace goost;
@@ -16,7 +16,7 @@ shared_ptr<const goost::Sink> MagmaCfbSinkFactory::sink(
 {
 	return make_shared<magma::CFBSink>(
 		under,
-		make_shared<magma::Key>(
+		make_shared<magma::LazyKey>(
 			"ffeeddccbbaa99887766554433221100"
 			"f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff"
 		),

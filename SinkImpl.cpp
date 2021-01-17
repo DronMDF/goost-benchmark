@@ -1,6 +1,6 @@
 #include "SinkImpl.h"
 #include <vector>
-#include "MemorySink.h"
+#include "NullSink.h"
 #include "SinkFactory.h"
 
 using namespace std;
@@ -19,7 +19,7 @@ chrono::duration<double> SinkImpl::run(const size_t data_size, const size_t bloc
 {
 	size_t size = 0;
 	vector<byte> block(min(block_size, data_size), byte());
-	auto sink = factory->sink(make_shared<MemorySink>());
+	auto sink = factory->sink(make_shared<NullSink>());
 	const auto start_time = chrono::high_resolution_clock::now();
 	while (size < data_size) {
 		sink = sink->write(block);
