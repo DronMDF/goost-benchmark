@@ -114,7 +114,7 @@ int main(int, char **)
 	}
 
 	// plaintext, ciphertext, recovered text
-	constexpr size_t datasize = 1024 * 1024 * 1024;
+	constexpr size_t datasize = 64 * 1024 * 1024;
 	vector<uint8_t> ptext(datasize);
 	vector<uint8_t> ctext(datasize);
 	vector<uint8_t> rtext(datasize);
