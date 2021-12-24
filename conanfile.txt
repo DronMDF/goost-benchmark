@@ -1,6 +1,6 @@
 [requires]
-2out/0.10@dronmdf/testing
-goost/0.4@dronmdf/testing
+2out/0.10@dronmdf/stable
+goost/0.4.36@dronmdf/testing
 
 [generators]
 cmake

@@ -3,6 +3,7 @@
 #include "Benchmark.h"
 #include "MagmaCfbSinkFactory.h"
 #include "MagmaEcbSinkFactory.h"
+#include "MagmaEcbSSE3SinkFactory.h"
 #include "OpensslSinkFactory.h"
 #include "SinkImpl.h"
 #include "TransparentSinkFactory.h"
@@ -25,7 +26,8 @@ int main(int, char **)
 		make_shared<SinkImpl>(make_shared<TransparentSinkFactory>()),
 		make_shared<SinkImpl>(make_shared<OpensslSinkFactory>()),
 		make_shared<SinkImpl>(make_shared<MagmaCfbSinkFactory>()),
-		make_shared<SinkImpl>(make_shared<MagmaEcbSinkFactory>())
+		make_shared<SinkImpl>(make_shared<MagmaEcbSinkFactory>()),
+		make_shared<SinkImpl>(make_shared<MagmaEcbSSE3SinkFactory>())
 	).run();
 	return 0;
 }
