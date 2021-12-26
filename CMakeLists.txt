@@ -15,6 +15,7 @@ ADD_EXECUTABLE(
 	Benchmark.cpp
 	MagmaCfbSinkFactory.cpp
 	MagmaEcbSinkFactory.cpp
+	MagmaEcbSSE3SinkFactory.cpp
 	MemorySink.cpp
 	NullSink.cpp
 	OpensslSink.cpp
