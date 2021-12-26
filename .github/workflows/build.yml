@@ -7,13 +7,13 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Prerequesties
-    - run: |
+      run: |
         sudo apt-get install cmake cppcheck doxygen python3-pip python3-setuptools
         sudo pip3 install cpplint conan
         conan remote add pureoop-2out https://conan.cloudsmith.io/pureoop/2out
         conan remote add pureoop-goost https://conan.cloudsmith.io/pureoop/goost
     - name: Build
-    - run: |
+      run: |
         conan install . -s compiler.libcxx='libstdc++11' --build goost --build 2out
         cmake .
         make style
