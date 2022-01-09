@@ -21,6 +21,9 @@ ADD_EXECUTABLE(
 	OpensslSink.cpp
 	OpensslSinkFactory.cpp
 	SinkImpl.cpp
+	SSE3Alg.cpp
+	SSE3EcbIOFactory.cpp
+	StringKeyContainer.cpp
 	TransparentSinkFactory.cpp
 )
 
