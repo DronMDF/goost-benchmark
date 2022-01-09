@@ -1,6 +1,9 @@
 #include "MagmaEcbSSE3SinkFactory.h"
 #include <goost/magma/ECBSink.h>
 #include <goost/magma/LazyKey.h>
+#include "IOFactory.h"
+#include "SSE3Alg.h"
+#include "StringKeyContainer.h"
 
 using namespace std;
 using namespace goost;
@@ -14,11 +17,10 @@ shared_ptr<const goost::Sink> MagmaEcbSSE3SinkFactory::sink(
 	const shared_ptr<const goost::Sink> &under
 ) const
 {
-	return make_shared<magma::ECBSink>(
-		under,
-		make_shared<magma::LazyKey>(
+	return SSE3Alg(
+		make_shared<StringKeyContainer>(
 			"ffeeddccbbaa99887766554433221100"
 			"f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff"
 		)
-	);
+	).ecb()->sink(under);
 }

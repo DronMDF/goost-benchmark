@@ -12,9 +12,9 @@ jobs:
         sudo pip3 install cpplint conan
         conan remote add pureoop-2out https://conan.cloudsmith.io/pureoop/2out
         conan remote add pureoop-goost https://conan.cloudsmith.io/pureoop/goost
+        conan install . -s compiler.libcxx='libstdc++11' --build goost --build 2out
     - name: Build
       run: |
-        conan install . -s compiler.libcxx='libstdc++11' --build goost --build 2out
         cmake .
         make style
         make VERBOSE=1
